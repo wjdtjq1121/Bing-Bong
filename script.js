@@ -2240,8 +2240,8 @@ function setupPlanetSelector() {
     const planetItems = document.querySelectorAll('.planet-item');
     planetItems.forEach(item => {
         item.addEventListener('click', (e) => {
-            // 도움말 버튼 클릭 시 행성 선택되지 않도록
-            if (e.target.classList.contains('help-btn')) {
+            // 회전 버튼 클릭 시 행성 선택되지 않도록
+            if (e.target.classList.contains('rotate-btn')) {
                 return;
             }
 
@@ -2251,15 +2251,18 @@ function setupPlanetSelector() {
         });
     });
 
-    // 도움말 버튼 이벤트 핸들러
-    const helpButtons = document.querySelectorAll('.help-btn');
-    helpButtons.forEach(btn => {
+    // 회전 버튼 이벤트 핸들러
+    const rotateButtons = document.querySelectorAll('.rotate-btn');
+    rotateButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation(); // 부모 planet-item 클릭 이벤트 전파 방지
 
             const planetType = btn.dataset.planet;
-            // 도움말 메시지 표시
-            showHelpMessage(planetType);
+            // 회전 (0 → 90 → 180 → 270 → 0)
+            gameState.planetRotations[planetType] = (gameState.planetRotations[planetType] + 90) % 360;
+
+            // 미리보기 회전 업데이트
+            updatePlanetPreview(planetType);
         });
     });
 }
@@ -2326,7 +2329,7 @@ function updateGameModeUI() {
     const questionerTitle = document.getElementById('questionerBoardTitle');
     const questionerDesc = document.getElementById('questionerBoardDesc');
     if (isSinglePlay) {
-        questionerTitle.textContent = 'AI 문제';
+        questionerTitle.textContent = '유정 💗 정섭 추억';
         questionerDesc.textContent = '레이저로 행성 위치를 추론하세요';
     } else {
         questionerTitle.textContent = '질문자 보드';
@@ -2538,29 +2541,6 @@ function closeFailModal() {
     if (modal) {
         modal.classList.remove('show');
     }
-}
-
-// 도움말 버튼 기능
-function showHelpMessage(planetType) {
-    const planetNames = {
-        'small-red': '첫 만남 행성',
-        'small-orange': '대부도 불꽃놀이 별',
-        'small-blue': '하동 녹차밭 별',
-        'medium-earth': '333일 기념 별',
-        'medium-jupiter': '제주도 여행 별',
-        'large-saturn': '크리스마스 별'
-    };
-
-    // 모달로 표시
-    const helpModal = document.createElement('div');
-    helpModal.className = 'modal show';
-    helpModal.innerHTML = `
-        <div class="modal-content">
-            <p class="modal-message">삥뽕아, 이 행성은<br>90도로 꺾이는 거야. 힘내!</p>
-            <button class="modal-btn" onclick="this.closest('.modal').remove()">알겠어!</button>
-        </div>
-    `;
-    document.body.appendChild(helpModal);
 }
 
 // 전역 함수로 노출
