@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orapa Space - 우주 탐험 게임</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌌 ORAPA SPACE 🌌</h1>
+            <p class="subtitle">레이저로 숨겨진 행성을 찾아라!</p>
+            <div class="version-info" id="versionInfo">v1.0.0</div>
+        </header>
+
+        <div class="game-info">
+            <div class="info-panel">
+                <h3>게임 모드</h3>
+                <select id="gameMode">
+                    <option value="singlePlay">싱글 플레이</option>
+                    <option value="practice">연습 모드</option>
+                </select>
+            </div>
+            <div class="info-panel">
+                <h3>현재 단계</h3>
+                <p id="currentPhase">게임 대기 중</p>
+            </div>
+            <div class="info-panel">
+                <h3>시도 횟수</h3>
+                <p id="laserCount">0</p>
+            </div>
+        </div>
+
+        <!-- 게임 시작 버튼 -->
+        <div class="start-game-section" id="startGameSection">
+            <button id="startGameBtn" class="btn btn-primary btn-large">🚀 게임 시작</button>
+            <p class="start-game-desc">버튼을 눌러 새로운 문제를 시작하세요</p>
+        </div>
+
+        <!-- 플레이어 1 보드 (탐험가) -->
+        <div class="board-section explorer-section">
+            <h2>탐험가 보드</h2>
+            <p class="board-desc">상대 행성을 추론하세요</p>
+            <div id="explorerBoard" class="game-board"></div>
+            <div class="controls">
+                <button id="submitSolution" class="btn btn-primary">솔루션 제출</button>
+                <button id="giveUpBtn" class="btn btn-secondary" style="display: none;">포기하기</button>
+            </div>
+        </div>
+
+        <!-- 플레이어 2 보드 (질문자) -->
+        <div class="board-section questioner-section">
+            <h2 id="questionerBoardTitle">질문자 보드</h2>
+            <p class="board-desc" id="questionerBoardDesc">행성을 배치하세요</p>
+            <div id="questionerBoard" class="game-board"></div>
+            <div class="controls" id="questionerControls">
+                <button id="randomPlacements" class="btn btn-secondary">랜덤 배치</button>
+                <button id="clearBoard" class="btn btn-secondary">초기화</button>
+                <button id="confirmSetup" class="btn btn-primary">배치 완료</button>
+            </div>
+        </div>
+
+        <!-- 행성 선택 패널 -->
+        <div class="planet-panel">
+            <h3>행성 선택</h3>
+            <div class="planet-selector">
+                <div class="planet-item" data-planet="small-red">
+                    <div class="planet small small-red shape-circle" style="background: #e74c3c;"></div>
+                    <span>작은 빨강</span>
+                </div>
+                <div class="planet-item" data-planet="small-orange">
+                    <div class="planet medium small-orange shape-diamond" style="background: #e74c3c;"></div>
+                    <span>중간 빨강</span>
+                </div>
+                <div class="planet-item" data-planet="small-blue">
+                    <div class="planet medium small-blue shape-diamond" style="background: #3498db;"></div>
+                    <span>중간 파랑</span>
+                </div>
+                <div class="planet-item" data-planet="medium-earth">
+                    <div class="planet large medium-earth shape-octagon" style="background: #f1c40f;"></div>
+                    <span>중간 노랑</span>
+                </div>
+                <div class="planet-item rotatable" data-planet="medium-jupiter">
+                    <div class="planet-preview-container" id="preview-medium-jupiter">
+                        <div class="planet-preview trapezoid-preview" style="background: #ecf0f1; width: 60px; height: 30px; clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);"></div>
+                    </div>
+                    <span>큰 흰색</span>
+                    <button class="rotate-btn" data-planet="medium-jupiter">🔄 회전</button>
+                </div>
+                <div class="planet-item rotatable" data-planet="large-saturn">
+                    <div class="planet-preview-container" id="preview-large-saturn">
+                        <div class="planet-preview saturn-preview" style="width: 60px; height: 30px; display: flex; align-items: center;">
+                            <div style="width: 15px; height: 30px; position: relative;">
+                                <div style="width: 100%; height: 3px; background: #ecf0f1; position: absolute; top: 50%; transform: translateY(-50%); box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);"></div>
+                            </div>
+                            <div style="width: 30px; height: 30px; background: #ecf0f1; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);"></div>
+                            <div style="width: 15px; height: 30px; position: relative;">
+                                <div style="width: 100%; height: 3px; background: #ecf0f1; position: absolute; top: 50%; transform: translateY(-50%); box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <span>큰 링 흰색</span>
+                    <button class="rotate-btn" data-planet="large-saturn">🔄 회전</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 레이저 발사 패널 -->
+        <div class="laser-panel">
+            <h3>레이저 발사</h3>
+
+            <div class="laser-section">
+                <h4>1. 위치 선택</h4>
+                <div class="position-buttons">
+                    <div class="position-section">
+                        <h5>1-11 (위쪽) + 12-18 (오른쪽)</h5>
+                        <div class="button-grid" id="numberButtons"></div>
+                    </div>
+                    <div class="position-section">
+                        <h5>A-G (왼쪽) + H-R (아래쪽)</h5>
+                        <div class="button-grid" id="letterButtons"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="laser-section">
+                <h4>2. 발사!</h4>
+                <button id="fireLaserBtn" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.2em;">🔫 레이저 발사</button>
+            </div>
+
+            <div id="laserResult" class="laser-result"></div>
+        </div>
+
+        <!-- 레이저 히스토리 -->
+        <div class="history-panel">
+            <h3>레이저 발사 기록</h3>
+            <div id="laserHistory" class="history-list"></div>
+        </div>
+
+        <!-- 색상 혼합 규칙 -->
+        <div class="color-mixing-panel">
+            <h3>색상 혼합 규칙</h3>
+            <div class="mixing-rules">
+                <div class="rule-section">
+                    <h4>2색 혼합</h4>
+                    <div class="rule-list">
+                        <div class="rule-item">빨강 + 노랑 = 주황</div>
+                        <div class="rule-item">빨강 + 파랑 = 보라</div>
+                        <div class="rule-item">노랑 + 파랑 = 초록</div>
+                        <div class="rule-item">빨강 + 흰색 = 분홍</div>
+                        <div class="rule-item">노랑 + 흰색 = 레몬</div>
+                        <div class="rule-item">파랑 + 흰색 = 하늘색</div>
+                    </div>
+                </div>
+                <div class="rule-section">
+                    <h4>3색 혼합</h4>
+                    <div class="rule-list">
+                        <div class="rule-item">빨강 + 노랑 + 흰색 = 연주황</div>
+                        <div class="rule-item">빨강 + 파랑 + 흰색 = 연보라</div>
+                        <div class="rule-item">노랑 + 파랑 + 흰색 = 연초록</div>
+                        <div class="rule-item">빨강 + 노랑 + 파랑 = 검정</div>
+                    </div>
+                </div>
+                <div class="rule-section">
+                    <h4>특수 혼합</h4>
+                    <div class="rule-list">
+                        <div class="rule-item">검정 + 흰색 = 회색</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 디버그: 행성 배치 정보 -->
+        <div class="debug-panel" id="debugPanel1">
+            <h3>🛠️ 디버그: 행성 배치 정보</h3>
+            <button id="copyDebugInfo" class="btn btn-secondary" style="margin-bottom: 10px;">📋 복사하기</button>
+            <div id="planetDebugInfo" class="debug-content">
+                배치 완료를 클릭하면 행성 배치 정보가 여기에 표시됩니다.
+            </div>
+        </div>
+
+        <!-- 디버그: 전체 레이저 테스트 -->
+        <div class="debug-panel" id="debugPanel2">
+            <h3>🧪 디버그: 전체 레이저 테스트 (36가지)</h3>
+            <div id="allLaserTests" class="laser-test-results">
+                배치 완료를 클릭하면 모든 레이저 발사 결과가 여기에 표시됩니다.
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
