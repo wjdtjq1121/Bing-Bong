@@ -340,8 +340,8 @@ function placePlanet(row, col) {
         // 원점을 클릭한 경우 - 행성 제거 확인
         const planetNames = {
             'small-red': '첫 만남 행성',
-            'small-orange': '하동 녹차밭 별',
-            'small-blue': '대부도 불꽃놀이 별',
+            'small-orange': '대부도 불꽃놀이 별',
+            'small-blue': '하동 녹차밭 별',
             'medium-earth': '333일 기념 별',
             'medium-jupiter': '제주도 여행 별',
             'large-saturn': '크리스마스 별'
@@ -391,8 +391,8 @@ function markExploration(row, col) {
         // 원점을 클릭한 경우 - 행성 제거 확인
         const planetNames = {
             'small-red': '첫 만남 행성',
-            'small-orange': '하동 녹차밭 별',
-            'small-blue': '대부도 불꽃놀이 별',
+            'small-orange': '대부도 불꽃놀이 별',
+            'small-blue': '하동 녹차밭 별',
             'medium-earth': '333일 기념 별',
             'medium-jupiter': '제주도 여행 별',
             'large-saturn': '크리스마스 별'
@@ -2219,7 +2219,7 @@ function showRestartButton() {
     const startSection = document.getElementById('startGameSection');
     if (startSection) {
         startSection.innerHTML = `
-            <button id="restartGameBtn" class="btn btn-primary btn-large">🔄 다시하기</button>
+            <button id="restartGameBtn" class="btn btn-primary btn-large">💕 추억 탐방</button>
             <p class="start-game-desc">버튼을 눌러 새로운 문제를 시작하세요</p>
         `;
         startSection.style.display = 'block';
@@ -2544,14 +2544,23 @@ function closeFailModal() {
 function showHelpMessage(planetType) {
     const planetNames = {
         'small-red': '첫 만남 행성',
-        'small-orange': '하동 녹차밭 별',
-        'small-blue': '대부도 불꽃놀이 별',
+        'small-orange': '대부도 불꽃놀이 별',
+        'small-blue': '하동 녹차밭 별',
         'medium-earth': '333일 기념 별',
         'medium-jupiter': '제주도 여행 별',
         'large-saturn': '크리스마스 별'
     };
 
-    alert(`삥뽕아, 이 행성은 90도로 꺾이는 거야. 힘내!`);
+    // 모달로 표시
+    const helpModal = document.createElement('div');
+    helpModal.className = 'modal show';
+    helpModal.innerHTML = `
+        <div class="modal-content">
+            <p class="modal-message">삥뽕아, 이 행성은<br>90도로 꺾이는 거야. 힘내!</p>
+            <button class="modal-btn" onclick="this.closest('.modal').remove()">알겠어!</button>
+        </div>
+    `;
+    document.body.appendChild(helpModal);
 }
 
 // 전역 함수로 노출
