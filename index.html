@@ -63,30 +63,30 @@
 
         <!-- 행성 선택 패널 -->
         <div class="planet-panel">
-            <h3>행성 선택</h3>
+            <h3>추억의 별 선택</h3>
             <div class="planet-selector">
                 <div class="planet-item" data-planet="small-red">
                     <div class="planet small small-red shape-circle" style="background: #e74c3c;"></div>
-                    <span>작은 빨강</span>
+                    <span>첫 만남 행성</span>
                 </div>
                 <div class="planet-item" data-planet="small-orange">
                     <div class="planet medium small-orange shape-diamond" style="background: #e74c3c;"></div>
-                    <span>중간 빨강</span>
+                    <span>하동 녹차밭 별</span>
                 </div>
                 <div class="planet-item" data-planet="small-blue">
                     <div class="planet medium small-blue shape-diamond" style="background: #3498db;"></div>
-                    <span>중간 파랑</span>
+                    <span>대부도 불꽃놀이 별</span>
                 </div>
                 <div class="planet-item" data-planet="medium-earth">
                     <div class="planet large medium-earth shape-octagon" style="background: #f1c40f;"></div>
-                    <span>중간 노랑</span>
+                    <span>333일 기념 별</span>
                 </div>
                 <div class="planet-item rotatable" data-planet="medium-jupiter">
                     <div class="planet-preview-container" id="preview-medium-jupiter">
                         <div class="planet-preview trapezoid-preview" style="background: #ecf0f1; width: 60px; height: 30px; clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);"></div>
                     </div>
-                    <span>큰 흰색</span>
-                    <button class="rotate-btn" data-planet="medium-jupiter">🔄 회전</button>
+                    <span>제주도 여행 별</span>
+                    <button class="help-btn" data-planet="medium-jupiter">🐸 도움말</button>
                 </div>
                 <div class="planet-item rotatable" data-planet="large-saturn">
                     <div class="planet-preview-container" id="preview-large-saturn">
@@ -100,8 +100,8 @@
                             </div>
                         </div>
                     </div>
-                    <span>큰 링 흰색</span>
-                    <button class="rotate-btn" data-planet="large-saturn">🔄 회전</button>
+                    <span>크리스마스 별</span>
+                    <button class="help-btn" data-planet="large-saturn">🐸 도움말</button>
                 </div>
             </div>
         </div>
@@ -186,6 +186,34 @@
             <div id="allLaserTests" class="laser-test-results">
                 배치 완료를 클릭하면 모든 레이저 발사 결과가 여기에 표시됩니다.
             </div>
+        </div>
+    </div>
+
+    <!-- 모달 창들 -->
+    <div id="startModal" class="modal">
+        <div class="modal-content">
+            <p class="modal-message">올챙이 공주님, 수호기사가 준비한 우주<br>미로를 통과해 줄래?</p>
+            <button class="modal-btn" onclick="closeStartModal()">알겠어 개구리 왕자님!</button>
+        </div>
+    </div>
+
+    <div id="failModal" class="modal">
+        <div class="modal-content">
+            <p class="modal-message">아쉽다! 하지만 올챙이 공주님은<br>포기하지 않지? 수호기사한테 뽀뽀 한 번 해주면<br>한번 더 시도하게 해줄게!</p>
+            <button class="modal-btn" onclick="closeFailModal()">알겠어 개구리 왕자님!</button>
+        </div>
+    </div>
+
+    <div id="successModal" class="modal">
+        <div class="modal-content success-modal">
+            <img src="cat-christmas.png" alt="Merry Christmas Cat" class="success-cat-image" onerror="this.style.display='none'">
+            <h2 class="success-title">우주 탐사 성공! 삥뽕아 고생했어! 🪐✨</h2>
+            <div class="success-message">
+                <p>복잡한 행성들 사이에서 길을 찾아줘서 고마워. 레이저가 이리저리 꺾여서 힘들었지?</p>
+                <p>사실 이 우주는 우리 사랑이 이어지는 길을 나타낸 거야.</p>
+                <p>어떤 장애물이 있어도 결국 정답을 찾아낸 것처럼, 앞으로도 우리 앞에 어떤 어려운 일이 있어도 지금처럼 오빠랑 같이 하나씩 풀어나가자.</p>
+            </div>
+            <button class="modal-btn" onclick="closeSuccessModal()">닫기</button>
         </div>
     </div>
 

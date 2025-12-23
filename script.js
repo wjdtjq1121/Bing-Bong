@@ -1,5 +1,5 @@
 // 버전 정보
-const GAME_VERSION = "1.0.0";
+const GAME_VERSION = "2.0.0";
 
 // 게임 상태 관리
 const gameState = {
@@ -339,12 +339,12 @@ function placePlanet(row, col) {
     if (existingPlanet && existingPlanet.isOrigin) {
         // 원점을 클릭한 경우 - 행성 제거 확인
         const planetNames = {
-            'small-red': '작은 빨강',
-            'small-orange': '중간 빨강',
-            'small-blue': '중간 파랑',
-            'medium-earth': '중간 노랑',
-            'medium-jupiter': '큰 흰색',
-            'large-saturn': '큰 링 흰색'
+            'small-red': '첫 만남 행성',
+            'small-orange': '하동 녹차밭 별',
+            'small-blue': '대부도 불꽃놀이 별',
+            'medium-earth': '333일 기념 별',
+            'medium-jupiter': '제주도 여행 별',
+            'large-saturn': '크리스마스 별'
         };
         const confirmed = confirm(`${planetNames[existingPlanet.type]} 행성을 제거하시겠습니까?`);
         if (confirmed) {
@@ -390,12 +390,12 @@ function markExploration(row, col) {
     if (existingPlanet && existingPlanet.isOrigin) {
         // 원점을 클릭한 경우 - 행성 제거 확인
         const planetNames = {
-            'small-red': '작은 빨강',
-            'small-orange': '중간 빨강',
-            'small-blue': '중간 파랑',
-            'medium-earth': '중간 노랑',
-            'medium-jupiter': '큰 흰색',
-            'large-saturn': '큰 링 흰색'
+            'small-red': '첫 만남 행성',
+            'small-orange': '하동 녹차밭 별',
+            'small-blue': '대부도 불꽃놀이 별',
+            'medium-earth': '333일 기념 별',
+            'medium-jupiter': '제주도 여행 별',
+            'large-saturn': '크리스마스 별'
         };
         const confirmed = confirm(`${planetNames[existingPlanet.type]} 행성을 제거하시겠습니까?`);
         if (confirmed) {
@@ -2131,32 +2131,7 @@ function submitSolution() {
         if (!correct) break;
     }
 
-    // 결과 메시지 표시
-    const resultDiv = document.createElement('div');
-    resultDiv.className = 'result-popup';
-
-    // 모바일 대응 크기
-    const isMobile = window.innerWidth <= 480;
-    const fontSize = isMobile ? '2em' : '3em';
-    const padding = isMobile ? '30px 40px' : '50px 80px';
-
-    resultDiv.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: ${correct ? 'rgba(46, 204, 113, 0.98)' : 'rgba(231, 76, 60, 0.98)'};
-        color: white;
-        padding: ${padding};
-        border-radius: 20px;
-        font-size: ${fontSize};
-        font-weight: bold;
-        z-index: 20000;
-        box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
-        text-align: center;
-        animation: resultPopup 0.5s ease-out;
-    `;
-
+    // 결과에 따라 모달 표시
     if (correct) {
         gameState.phase = 'finished';
         document.getElementById('currentPhase').textContent = '게임 종료 - 승리!';
@@ -2169,44 +2144,12 @@ function submitSolution() {
             document.getElementById('giveUpBtn').style.display = 'none';
         }
 
-        resultDiv.innerHTML = `
-            🎉 성공! 🎉<br>
-            <div style="font-size: 0.5em; margin-top: 20px;">
-                총 시도 횟수: ${gameState.laserCount}회
-            </div>
-        `;
+        // 성공 모달 표시
+        openSuccessModal();
     } else {
-        // 실패 시 게임을 종료하지 않고 계속 진행
-        resultDiv.innerHTML = `
-            <div style="white-space: nowrap;">❌ 실패 ❌</div>
-            <div style="font-size: 0.4em; margin-top: 20px;">
-                다시 시도하세요!
-            </div>
-        `;
+        // 실패 모달 표시
+        openFailModal();
     }
-
-    document.body.appendChild(resultDiv);
-
-    // 정답이 아닌 경우 1.5초 후 팝업 제거 (게임은 계속)
-    if (!correct) {
-        setTimeout(() => {
-            if (resultDiv && resultDiv.parentNode) {
-                resultDiv.remove();
-            }
-        }, 1500);
-        return; // 게임은 계속 진행
-    }
-
-    // 정답인 경우 - 3초 후 모달 제거
-    setTimeout(() => {
-        if (resultDiv && resultDiv.parentNode) {
-            resultDiv.remove();
-        }
-        // 싱글 플레이 모드에서는 다시하기 버튼 표시
-        if (gameState.mode === 'singlePlay') {
-            showRestartButton();
-        }
-    }, 3000);
 }
 
 // 포기하기
@@ -2297,8 +2240,8 @@ function setupPlanetSelector() {
     const planetItems = document.querySelectorAll('.planet-item');
     planetItems.forEach(item => {
         item.addEventListener('click', (e) => {
-            // 회전 버튼 클릭 시 행성 선택되지 않도록
-            if (e.target.classList.contains('rotate-btn')) {
+            // 도움말 버튼 클릭 시 행성 선택되지 않도록
+            if (e.target.classList.contains('help-btn')) {
                 return;
             }
 
@@ -2308,18 +2251,15 @@ function setupPlanetSelector() {
         });
     });
 
-    // 회전 버튼 이벤트 핸들러
-    const rotateButtons = document.querySelectorAll('.rotate-btn');
-    rotateButtons.forEach(btn => {
+    // 도움말 버튼 이벤트 핸들러
+    const helpButtons = document.querySelectorAll('.help-btn');
+    helpButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation(); // 부모 planet-item 클릭 이벤트 전파 방지
 
             const planetType = btn.dataset.planet;
-            // 회전 (0 → 90 → 180 → 270 → 0)
-            gameState.planetRotations[planetType] = (gameState.planetRotations[planetType] + 90) % 360;
-
-            // 미리보기 회전 업데이트
-            updatePlanetPreview(planetType);
+            // 도움말 메시지 표시
+            showHelpMessage(planetType);
         });
     });
 }
@@ -2455,8 +2395,13 @@ function setupEventListeners() {
     setupLaserButtons();
 }
 
-// 게임 시작
+// 게임 시작 (모달 표시)
 function startGame() {
+    openStartModal();
+}
+
+// 실제 게임 시작
+function actualStartGame() {
     // 게임 시작 버튼 숨기기
     const startSection = document.getElementById('startGameSection');
     if (startSection) {
@@ -2545,3 +2490,71 @@ window.addEventListener('resize', () => {
         }
     }, 500); // debounce 시간 증가
 });
+
+// 모달 관련 함수들
+function openStartModal() {
+    const modal = document.getElementById('startModal');
+    if (modal) {
+        modal.classList.add('show');
+    }
+}
+
+function closeStartModal() {
+    const modal = document.getElementById('startModal');
+    if (modal) {
+        modal.classList.remove('show');
+    }
+    // 실제 게임 시작
+    actualStartGame();
+}
+
+function openSuccessModal() {
+    const modal = document.getElementById('successModal');
+    if (modal) {
+        modal.classList.add('show');
+    }
+}
+
+function closeSuccessModal() {
+    const modal = document.getElementById('successModal');
+    if (modal) {
+        modal.classList.remove('show');
+    }
+    // 싱글 플레이 모드에서는 다시하기 버튼 표시
+    if (gameState.mode === 'singlePlay') {
+        showRestartButton();
+    }
+}
+
+function openFailModal() {
+    const modal = document.getElementById('failModal');
+    if (modal) {
+        modal.classList.add('show');
+    }
+}
+
+function closeFailModal() {
+    const modal = document.getElementById('failModal');
+    if (modal) {
+        modal.classList.remove('show');
+    }
+}
+
+// 도움말 버튼 기능
+function showHelpMessage(planetType) {
+    const planetNames = {
+        'small-red': '첫 만남 행성',
+        'small-orange': '하동 녹차밭 별',
+        'small-blue': '대부도 불꽃놀이 별',
+        'medium-earth': '333일 기념 별',
+        'medium-jupiter': '제주도 여행 별',
+        'large-saturn': '크리스마스 별'
+    };
+
+    alert(`삥뽕아, 이 행성은 90도로 꺾이는 거야. 힘내!`);
+}
+
+// 전역 함수로 노출
+window.closeStartModal = closeStartModal;
+window.closeSuccessModal = closeSuccessModal;
+window.closeFailModal = closeFailModal;

@@ -12,13 +12,36 @@ html {
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffc3f0 100%);
+    background-attachment: fixed;
     color: #fff;
     min-height: 100vh;
     padding: 20px;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     touch-action: manipulation;
+    position: relative;
+}
+
+/* 하트 배경 패턴 */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(255, 182, 193, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 192, 203, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255, 105, 180, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+body > * {
+    position: relative;
+    z-index: 1;
 }
 
 .container {
@@ -1567,5 +1590,175 @@ header h1 {
 
     .start-game-desc {
         font-size: 0.9em;
+    }
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe4e9 100%);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+    margin: 20px;
+    box-shadow: 0 10px 40px rgba(255, 105, 180, 0.4);
+    animation: modalSlideIn 0.4s ease;
+    border: 3px solid rgba(255, 182, 193, 0.5);
+}
+
+.modal-content.success-modal {
+    max-width: 700px;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe4e9 100%);
+}
+
+.modal-message {
+    font-size: 1.4em;
+    color: #d946a6;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(217, 70, 166, 0.2);
+}
+
+.modal-btn {
+    background: linear-gradient(135deg, #ff6b9d 0%, #c239b3 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+    transition: all 0.3s ease;
+}
+
+.modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+}
+
+.modal-btn:active {
+    transform: translateY(0);
+}
+
+.success-cat-image {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto 20px;
+    display: block;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.success-title {
+    color: #d946a6;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(217, 70, 166, 0.2);
+}
+
+.success-message {
+    color: #c239b3;
+    font-size: 1.1em;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.success-message p {
+    margin-bottom: 15px;
+}
+
+/* 도움말 버튼 스타일 (기존 회전 버튼 대체) */
+.help-btn {
+    margin-top: 5px;
+    padding: 5px 10px;
+    background: linear-gradient(135deg, #90EE90, #32CD32);
+    border: 2px solid #228B22;
+    border-radius: 15px;
+    color: white;
+    font-size: 0.75em;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(50, 205, 50, 0.3);
+}
+
+.help-btn:hover {
+    background: linear-gradient(135deg, #32CD32, #228B22);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(50, 205, 50, 0.5);
+}
+
+.help-btn:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 30px 20px;
+        max-width: 90%;
+    }
+
+    .modal-message {
+        font-size: 1.1em;
+    }
+
+    .modal-btn {
+        padding: 12px 30px;
+        font-size: 1em;
+    }
+
+    .success-title {
+        font-size: 1.4em;
+    }
+
+    .success-message {
+        font-size: 1em;
+    }
+
+    .success-cat-image {
+        max-width: 200px;
     }
 }
