@@ -336,8 +336,8 @@ function placePlanet(row, col) {
 
     // 클릭한 위치에 이미 행성이 있는지 확인
     const existingPlanet = gameState.questionerBoard[row][col];
-    if (existingPlanet && existingPlanet.isOrigin) {
-        // 원점을 클릭한 경우 - 행성 제거 확인
+    if (existingPlanet) {
+        // 행성의 어느 부분을 클릭해도 제거 가능
         const planetNames = {
             'small-red': '첫 만남 행성',
             'small-orange': '대부도 불꽃놀이 별',
@@ -387,8 +387,8 @@ function markExploration(row, col) {
 
     // 클릭한 위치에 이미 행성이 있는지 확인
     const existingPlanet = gameState.explorerBoard[row][col];
-    if (existingPlanet && existingPlanet.isOrigin) {
-        // 원점을 클릭한 경우 - 행성 제거 확인
+    if (existingPlanet) {
+        // 행성의 어느 부분을 클릭해도 제거 가능
         const planetNames = {
             'small-red': '첫 만남 행성',
             'small-orange': '대부도 불꽃놀이 별',
