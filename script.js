@@ -2245,6 +2245,14 @@ function setupPlanetSelector() {
                 return;
             }
 
+            // 이미 선택된 행성을 다시 클릭하면 선택 해제
+            if (item.classList.contains('selected')) {
+                item.classList.remove('selected');
+                gameState.selectedPlanet = null;
+                return;
+            }
+
+            // 다른 행성 선택
             planetItems.forEach(p => p.classList.remove('selected'));
             item.classList.add('selected');
             gameState.selectedPlanet = item.dataset.planet;
@@ -2264,6 +2272,17 @@ function setupPlanetSelector() {
             // 미리보기 회전 업데이트
             updatePlanetPreview(planetType);
         });
+    });
+
+    // 행성 패널 바깥 영역 클릭 시 선택 해제
+    document.addEventListener('click', (e) => {
+        const planetPanel = document.querySelector('.planet-panel');
+        // 행성 패널 내부를 클릭한 경우 무시
+        if (planetPanel && !planetPanel.contains(e.target)) {
+            // 선택된 행성 해제
+            planetItems.forEach(p => p.classList.remove('selected'));
+            gameState.selectedPlanet = null;
+        }
     });
 }
 
