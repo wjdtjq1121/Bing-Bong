@@ -2464,6 +2464,9 @@ function initGame() {
     if (startSection) {
         startSection.style.display = 'block';
     }
+
+    // 초기 UI 업데이트 (싱글 플레이 모드에서 질문자 컨트롤 숨기기)
+    updateGameModeUI();
 }
 
 // 버전 정보 업데이트
