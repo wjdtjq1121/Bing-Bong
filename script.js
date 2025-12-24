@@ -2277,8 +2277,13 @@ function setupPlanetSelector() {
     // 행성 패널 바깥 영역 클릭 시 선택 해제
     document.addEventListener('click', (e) => {
         const planetPanel = document.querySelector('.planet-panel');
-        // 행성 패널 내부를 클릭한 경우 무시
-        if (planetPanel && !planetPanel.contains(e.target)) {
+        const gameBoard = e.target.closest('.game-board');
+        const cell = e.target.closest('.cell');
+        const boardWrapper = e.target.closest('.board-wrapper');
+        const boardLabel = e.target.closest('.board-label');
+
+        // 행성 패널 내부를 클릭한 경우 또는 게임 보드 관련 요소를 클릭한 경우 무시
+        if (planetPanel && !planetPanel.contains(e.target) && !gameBoard && !cell && !boardWrapper && !boardLabel) {
             // 선택된 행성 해제
             planetItems.forEach(p => p.classList.remove('selected'));
             gameState.selectedPlanet = null;
